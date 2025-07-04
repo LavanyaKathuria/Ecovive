@@ -1,0 +1,28 @@
+{
+  "manifest_version": 3,
+  "name": "EcoCart",
+  "version": "1.0",
+  "description": "Analyze how eco-friendly products are while shopping.",
+  "permissions": ["scripting", "tabs", "storage"],
+  "host_permissions": [
+    "https://www.amazon.in/*",
+    "https://www.flipkart.com/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://www.amazon.in/*",
+        "https://www.flipkart.com/*"
+      ],
+      "js": ["content.js"],
+      "run_at": "document_idle"
+    }
+  ],
+
+  "action": {
+    "default_popup": "popup.html"
+  }
+}

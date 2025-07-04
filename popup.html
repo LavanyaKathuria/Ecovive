@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <title>EcoCart Score</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      padding: 15px;
+      background-color: #f4fdf6;
+      color: #333;
+      width: 300px;
+    }
+
+    .circle-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 15px;
+    }
+
+    .circle {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      background: conic-gradient(#c8e6c9 0deg, #c8e6c9 360deg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    .circle::before {
+      content: '';
+      position: absolute;
+      width: 90px;
+      height: 90px;
+      border-radius: 50%;
+      background-color: #f4fdf6;
+      z-index: 1;
+    }
+
+    .circle span {
+      position: absolute;
+      font-size: 24px;
+      font-weight: bold;
+      color: #2e7d32;
+      z-index: 2;
+    }
+
+    .bar {
+      height: 10px;
+      background-color: #e0f2f1;
+      border-radius: 5px;
+      margin-bottom: 10px;
+      position: relative;
+    }
+
+    .bar-fill {
+      height: 100%;
+      border-radius: 5px;
+      background-color: #26a69a;
+    }
+
+    .label {
+      font-weight: bold;
+      margin-bottom: 4px;
+    }
+
+    #details {
+      font-size: 14px;
+      margin-bottom: 15px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <h2>🌿 EcoCart Score</h2>
+
+  <div class="circle-container">
+    <div class="circle" id="circle">
+      <span id="score">--</span>
+    </div>
+  </div>
+
+  <p id="details">Analyzing...</p>
+
+  <div class="label">♻️ Materials</div>
+  <div class="bar"><div class="bar-fill" id="mat" style="width: 0%"></div></div>
+
+  <div class="label">🛡️ Certifications</div>
+  <div class="bar"><div class="bar-fill" id="cert" style="width: 0%"></div></div>
+
+  <div class="label">🏭 Manufacturing</div>
+  <div class="bar"><div class="bar-fill" id="manu" style="width: 0%"></div></div>
+
+  <div class="label">📦 Packaging</div>
+  <div class="bar"><div class="bar-fill" id="pack" style="width: 0%"></div></div>
+</body>
+<script src="popup.js"></script>
+</html>
