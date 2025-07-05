@@ -27,8 +27,39 @@ function renderUI(data) {
   document.getElementById("cert").style.width = `${cert}%`;
   document.getElementById("manu").style.width = `${manu}%`;
   document.getElementById("pack").style.width = `${pack}%`;
+
+  // ✅ Step 2: Add this block below the bar fills
+  if (data.recommendation) {
+    const div = document.createElement("div");
+    div.style.marginTop = "20px";
+    div.style.textAlign = "center";
+    div.innerHTML = `
+      <hr style="margin: 15px 0;">
+      <p><strong>🔁 Try a better product:</strong></p>
+      <a href="${data.recommendation.url}" target="_blank" style="color: green; font-weight: bold;">
+        🌿 ${data.recommendation.title}<br>(Score: ${data.recommendation.score})
+      </a>
+    `;
+    document.body.appendChild(div);
+  }
 }
 
+
+// Reset UI initially
+document.getElementById("score").innerText = "--";
+document.getElementById("details").innerText = "Analyzing...";
+
+// Try getting existing data
 chrome.storage.local.get("ecoCartData", ({ ecoCartData }) => {
-  renderUI(ecoCartData);
+  if (ecoCartData) {
+    renderUI(ecoCartData);
+  }
+});
+
+// Listen for any new updates to storage
+chrome.storage.onChanged.addListener((changes, area) => {
+  if (area === "local" && changes.ecoCartData) {
+    console.log("🔄 New data received:", changes.ecoCartData.newValue);
+    renderUI(changes.ecoCartData.newValue);
+  }
 });
