@@ -1,3 +1,4 @@
+// ✅ popup.js
 function renderUI(data) {
   const scoreEl = document.getElementById("score");
   const detailsEl = document.getElementById("details");
@@ -28,9 +29,12 @@ function renderUI(data) {
   document.getElementById("manu").style.width = `${manu}%`;
   document.getElementById("pack").style.width = `${pack}%`;
 
-  // ✅ Step 2: Add this block below the bar fills
+  const oldRecommendation = document.getElementById("recommendation-section");
+  if (oldRecommendation) oldRecommendation.remove();
+
   if (data.recommendation) {
     const div = document.createElement("div");
+    div.id = "recommendation-section";
     div.style.marginTop = "20px";
     div.style.textAlign = "center";
     div.innerHTML = `
@@ -44,7 +48,6 @@ function renderUI(data) {
   }
 }
 
-
 // Reset UI initially
 document.getElementById("score").innerText = "--";
 document.getElementById("details").innerText = "Analyzing...";
@@ -56,7 +59,7 @@ chrome.storage.local.get("ecoCartData", ({ ecoCartData }) => {
   }
 });
 
-// Listen for any new updates to storage
+// Listen for updates
 chrome.storage.onChanged.addListener((changes, area) => {
   if (area === "local" && changes.ecoCartData) {
     console.log("🔄 New data received:", changes.ecoCartData.newValue);
