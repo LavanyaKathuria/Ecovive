@@ -1,8 +1,13 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 
+
 app = Flask(__name__)
 CORS(app)
+
+@app.route('/test')
+def test():
+    return "✅ Backend connection successful!"
 
 RECOMMENDED_PRODUCTS = {
     "bag": [
@@ -180,71 +185,72 @@ RECOMMENDED_PRODUCTS = {
 }
 
 
+
+CATEGORY_KEYWORDS = {
+    "bag": ["bag", "tote", "carry bag"],
+    "bottle": ["bottle", "flask", "thermos", "water bottle"],
+    "toothbrush": ["toothbrush", "bamboo toothbrush"],
+    "garbage bag": ["garbage bag", "trash bag", "bin liner"],
+    "plate": ["plate", "disposable plate", "dinnerware"],
+    "notebook": ["notebook", "diary", "journal"],
+    # "pen": ["pen", "ballpen", "gel pen"],
+    "container": ["container", "tiffin", "lunch box", "storage box", "jar", "canister"],
+    "grocery": ["basmati", "toor dal", "lentil", "grain", "rice", "dal", "atta", "wheat", "organic food"],
+    "straw": ["straw", "metal straw", "reusable straw"],
+    "tshirt": ["t-shirt", "tee", "shirt"],
+    "pants": ["pants", "trousers", "jeans"],
+    "cutlery": ["cutlery", "spoon", "fork", "knife", "utensil"]
+}
+
 def detect_category(title, description):
     text = (title + " " + description).lower()
-    category_keywords = {
-        "bag": ["bag", "tote", "carry bag"],
-        "bottle": ["bottle", "flask", "thermos", "water bottle"],
-        "toothbrush": ["toothbrush", "bamboo toothbrush"],
-        "garbage bag": ["garbage bag", "trash bag", "bin liner"],
-        "plate": ["plate", "disposable plate", "dinnerware"],
-        "notebook": ["notebook", "diary", "journal"],
-        "container": ["container", "tiffin", "lunch box", "storage box", "jar", "canister"],
-        "grocery": [
-            "basmati", "toor dal", "lentil", "grain", "rice", "dal", "atta", "wheat flour", "edible", "ingredient",
-            "vegetable", "fruit", "nut", "snack"
-        ]
-    }
-
-    for category, keywords in category_keywords.items():
+    for category, keywords in CATEGORY_KEYWORDS.items():
         for word in keywords:
             if word in text:
                 return category
     return None
 
-
-
 def analyze_text(text):
     desc = text.lower()
     score = 0
-    suggestion_flags = {
+    flags = {
         'eco_material': False, 'ethical_cert': False, 'good_packaging': False,
         'eco_grocery': False, 'non_eco_material': False, 'bad_packaging': False, 'processed_food': False
     }
 
-    positive_keywords = {
-        'eco_material': ['organic', 'natural', 'cotton', 'linen', 'hemp', 'jute', 'bamboo', 'biodegradable', 'recyclable', 'eco-friendly', 'sustainable', 'plastic-free', 'reusable'],
+    pos = {
+        'eco_material': ['organic', 'cotton', 'hemp', 'linen', 'jute', 'bamboo', 'recyclable', 'biodegradable', 'natural', 'eco-friendly', 'reusable'],
         'ethical_cert': ['certified', 'fsc', 'fair trade', 'cruelty-free', 'bpa-free'],
-        'good_packaging': ['paper', 'cardboard', 'kraft', 'eco packaging'],
-        'eco_grocery': ['fruit', 'vegetable', 'dal', 'lentil', 'grain', 'flour', 'rice', 'almond', 'cashew']
+        'good_packaging': ['paper', 'cardboard', 'kraft'],
+        'eco_grocery': ['lentil', 'dal', 'grain', 'rice', 'wheat', 'vegetable', 'fruit', 'dry fruit']
     }
 
-    negative_keywords = {
+    neg = {
         'non_eco_material': ['plastic', 'synthetic', 'polyester', 'nylon', 'pvc'],
-        'bad_packaging': ['bubble wrap', 'foil', 'tetrapak', 'laminated'],
-        'processed_food': ['junk food', 'instant', 'chips', 'soft drink']
+        'bad_packaging': ['bubble wrap', 'tetrapak', 'foil'],
+        'processed_food': ['instant', 'junk food', 'soft drink', 'chips']
     }
 
-    for flag, keywords in positive_keywords.items():
+    for flag, keywords in pos.items():
         if any(k in desc for k in keywords):
             score += 5
-            suggestion_flags[flag] = True
+            flags[flag] = True
 
-    for flag, keywords in negative_keywords.items():
+    for flag, keywords in neg.items():
         if any(k in desc for k in keywords):
             score -= 5
-            suggestion_flags[flag] = True
+            flags[flag] = True
 
     score = max(-50, min(50, score))
-    parts = []
 
-    if suggestion_flags['eco_material']: parts.append("uses eco-friendly materials")
-    if suggestion_flags['ethical_cert']: parts.append("has ethical certifications")
-    if suggestion_flags['good_packaging']: parts.append("uses sustainable packaging")
-    if suggestion_flags['eco_grocery']: parts.append("includes organic or natural grocery items")
-    if suggestion_flags['non_eco_material']: parts.append("contains some synthetic materials")
-    if suggestion_flags['bad_packaging']: parts.append("may use unsustainable packaging")
-    if suggestion_flags['processed_food']: parts.append("includes processed or unhealthy ingredients")
+    parts = []
+    if flags['eco_material']: parts.append("uses eco-friendly materials")
+    if flags['ethical_cert']: parts.append("has ethical certifications")
+    if flags['good_packaging']: parts.append("uses sustainable packaging")
+    if flags['eco_grocery']: parts.append("includes organic grocery items")
+    if flags['non_eco_material']: parts.append("contains synthetic materials")
+    if flags['bad_packaging']: parts.append("may use non-sustainable packaging")
+    if flags['processed_food']: parts.append("includes processed ingredients")
 
     if not parts:
         suggestion = "No strong eco indicators found."
@@ -258,55 +264,41 @@ def analyze_text(text):
 
     return score, [suggestion]
 
-
-def analyze_image(img_url):
-    url = img_url.lower()
-    if any(word in url for word in ['leaf', 'green', 'bamboo', 'cotton', 'eco']):
-        return 15, "Image suggests eco-friendly design."
-    elif any(word in url for word in ['plastic', 'blister', 'pack']):
-        return -10, "Image may indicate plastic-based packaging."
+def analyze_image(url):
+    url = url.lower()
+    if any(w in url for w in ['leaf', 'bamboo', 'green']):
+        return 15, "Image suggests eco-friendly packaging."
+    elif any(w in url for w in ['plastic', 'blister', 'wrap']):
+        return -10, "Image may indicate plastic packaging."
     return 0, None
-
 
 @app.route("/analyze", methods=["POST"])
 def analyze():
     data = request.get_json()
     title = data.get("title", "")
-    description = data.get("description", "")
+    desc = data.get("description", "")
     image = data.get("image", "")
 
-    text_score, text_suggestions = analyze_text(f"{title} {description}")
-    image_score, image_suggestion = analyze_image(image)
+    if not title and not desc:
+        return jsonify({ "error": "Product title or description not found." }), 400
 
-    eco_score = max(0, min(100, 50 + text_score + image_score))
-    suggestions = text_suggestions
-    if image_suggestion:
-        suggestions.append(image_suggestion)
+    text_score, text_sugg = analyze_text(title + " " + desc)
+    img_score, img_sugg = analyze_image(image)
+    eco_score = max(0, min(100, 50 + text_score + img_score))
 
-    category = detect_category(title, description)
+    category = detect_category(title, desc)
+    source = "flipkart" if "flipkart" in title.lower() else "amazon"
 
-    # Detect source
-    source = ""
-    if "flipkart.com" in image or "flipkart.com" in description or "flipkart" in title.lower():
-        source = "flipkart"
-    elif "amazon.in" in image or "amazon.in" in description or "amazon" in title.lower():
-        source = "amazon"
-
-    # Recommend product from same platform
     recommend = None
     if eco_score < 60 and category and category in RECOMMENDED_PRODUCTS:
-        platform_links = {
-            "flipkart": lambda url: "flipkart.com" in url,
-            "amazon": lambda url: "amazon.in" in url
-        }
+        candidates = [p for p in RECOMMENDED_PRODUCTS[category] if source in p["url"]]
+        if not candidates:
+            candidates = RECOMMENDED_PRODUCTS[category]
+        recommend = max(candidates, key=lambda x: x["score"])
 
-        candidates = [
-            product for product in RECOMMENDED_PRODUCTS[category]
-            if platform_links.get(source, lambda _: True)(product["url"])
-        ]
-
-        if candidates:
-            recommend = max(candidates, key=lambda x: x["score"])
+    suggestions = text_sugg
+    if img_sugg:
+        suggestions.append(img_sugg)
 
     return jsonify({
         "product": title or "Unknown",
@@ -315,6 +307,22 @@ def analyze():
         "recommendation": recommend
     })
 
+# Purchased product handling
+purchased_products = {}
 
-if __name__ == "__main__":
-    app.run(debug=True)
+@app.route("/api/mark-purchased", methods=["POST", "DELETE"])
+def mark_purchased():
+    data = request.get_json()
+    url = data.get("url")
+    if not url:
+        return jsonify({ "error": "Missing URL" }), 400
+
+    if request.method == "POST":
+        purchased_products[url] = data
+        return jsonify({ "message": "Marked as purchased" }), 200
+    else:
+        purchased_products.pop(url, None)
+        return jsonify({ "message": "Unmarked as purchased" }), 200
+
+if __name__ == '__main__':
+    app.run(port=5000, debug=True, use_reloader=False)  # Disable reloader
