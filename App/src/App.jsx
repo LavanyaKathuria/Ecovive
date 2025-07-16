@@ -6,6 +6,9 @@ import Wallet from "@/pages/Wallet";
 import SearchPage from "@/pages/Search";
 import Profile from "@/pages/Profile";
 import WeeklyStats from "@/pages/WeeklyStats";
+import Login from "./pages/Login";
+import Signup from "./pages/Signup";
+import RequireAuth from "./utilis/RequireAuth";
 import "./App.css";
 
 function App() {
@@ -14,7 +17,19 @@ function App() {
       <div className="w-full max-w-sm">
         <Router basename="/EcoCart">
           <Routes>
-            <Route path="/" element={<Layout />}>
+            {/* Public Routes */}
+            <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<Signup />} />
+
+            {/* Protected Routes */}
+            <Route
+              path="/"
+              element={
+                <RequireAuth>
+                  <Layout />
+                </RequireAuth>
+              }
+            >
               <Route index element={<Home />} />
               <Route path="search" element={<SearchPage />} />
               <Route path="wallet" element={<Wallet />} />
