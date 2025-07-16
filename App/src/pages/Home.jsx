@@ -45,7 +45,7 @@ export default function Home() {
       {/* 🔝 Header */}
       <div className="bg-emerald-600 text-white p-4 flex justify-between items-center">
         <div>
-          <h1 className="text-lg font-bold">ECOCART</h1>
+          <h1 className="text-lg font-bold">ECOVIVE</h1>
           <p className="text-xs opacity-90">Mumbai, India</p>
         </div>
         <div className="flex items-center gap-3">
