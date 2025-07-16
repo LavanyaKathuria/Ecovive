@@ -63,7 +63,7 @@ export default function SearchPage() {
     queryKey: ["search", searchQuery],
     queryFn: () =>
       fetch(
-        `http://127.0.0.1:5000/api/recommendations?category=${encodeURIComponent(
+        `http://127.0.0.1:5050/api/recommendations?category=${encodeURIComponent(
           searchQuery
         )}`
       ).then((res) => res.json()),
@@ -76,7 +76,7 @@ export default function SearchPage() {
       queryKey: ["recommendation", category],
       queryFn: () =>
         fetch(
-          `http://127.0.0.1:5000/api/recommendations?category=${category}`
+          `http://127.0.0.1:5050/api/recommendations?category=${category}`
         ).then((res) => res.json()),
     })),
   });

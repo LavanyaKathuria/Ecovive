@@ -31,7 +31,7 @@ export default function Home() {
   const { data: products = [] } = useQuery({
     queryKey: ["products"],
     queryFn: () =>
-      fetch("http://127.0.0.1:5000/api/products").then((res) => res.json()),
+      fetch("http://127.0.0.1:5050/api/products").then((res) => res.json()),
   });
 
   const filteredProducts = products.filter(
