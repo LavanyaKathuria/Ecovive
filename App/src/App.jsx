@@ -9,6 +9,8 @@ import WeeklyStats from "@/pages/WeeklyStats";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import RequireAuth from "./utilis/RequireAuth";
+import Community from "./pages/Community";
+import TeamDashboard from "./pages/TeamDashboard";
 import "./App.css";
 
 function App() {
@@ -35,6 +37,8 @@ function App() {
               <Route path="wallet" element={<Wallet />} />
               <Route path="profile" element={<Profile />} />
               <Route path="weekly-stats" element={<WeeklyStats />} />
+              <Route path="/community" element={<Community />} />
+              <Route path="/team" element={<TeamDashboard />} />
             </Route>
           </Routes>
         </Router>
