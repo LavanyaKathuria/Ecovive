@@ -1,9 +1,10 @@
 import { NavLink } from "react-router-dom";
-import { Home, Gift, User } from "lucide-react";
+import { Home, Gift, User, Users } from "lucide-react";
 
 export default function BottomNav() {
   return (
     <nav className="fixed bottom-0 left-0 right-0 bg-white border-t shadow-md p-2 flex justify-around z-20">
+      {/* Home */}
       <NavLink
         to="/"
         className={({ isActive }) =>
@@ -16,6 +17,20 @@ export default function BottomNav() {
         Home
       </NavLink>
 
+      {/* Community */}
+      <NavLink
+        to="/community"
+        className={({ isActive }) =>
+          `flex flex-col items-center text-sm font-medium transition-colors ${
+            isActive ? "text-emerald-600" : "text-gray-500"
+          } hover:text-emerald-500`
+        }
+      >
+        <Users className="w-5 h-5 mb-1" />
+        Community
+      </NavLink>
+
+      {/* Rewards */}
       <NavLink
         to="/rewards"
         className={({ isActive }) =>
@@ -28,6 +43,7 @@ export default function BottomNav() {
         Rewards
       </NavLink>
 
+      {/* Profile */}
       <NavLink
         to="/profile"
         className={({ isActive }) =>

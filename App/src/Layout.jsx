@@ -4,6 +4,8 @@ import { Outlet, useLocation, Link } from "react-router-dom";
 import { FaUserCircle } from "react-icons/fa";
 import { PiHouseFill, PiWalletFill } from "react-icons/pi";
 import { Search as SearchIcon } from "lucide-react";
+import { Users as UsersIcon } from "lucide-react";
+
 
 export default function Layout() {
   const { pathname } = useLocation();
@@ -21,6 +23,7 @@ export default function Layout() {
           <NavItem to="/" label="Home" icon={<PiHouseFill />} active={pathname === "/"} />
           <NavItem to="/search" label="Search" icon={<SearchIcon />} active={pathname === "/search"} />
           <NavItem to="/wallet" label="Wallet" icon={<PiWalletFill />} active={pathname === "/wallet"} />
+          <NavItem to="/community" label="Community" icon={<UsersIcon />} active={pathname === "/community"} />
           <NavItem to="/profile" label="Profile" icon={<FaUserCircle />} active={pathname === "/profile"} />
         </div>
       </div>
