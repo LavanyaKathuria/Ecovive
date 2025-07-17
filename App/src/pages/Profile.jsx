@@ -3,7 +3,15 @@ import { useNavigate } from "react-router-dom";
 import { auth, db } from "../utilis/firebase";
 import { doc, getDoc } from "firebase/firestore";
 import { signOut } from "firebase/auth";
-import { FaUserCircle, FaLeaf, FaSignOutAlt, FaEdit, FaQuestionCircle } from "react-icons/fa";
+import {
+  FaUserCircle,
+  FaLeaf,
+  FaSignOutAlt,
+  FaEdit,
+  FaQuestionCircle,
+  FaRecycle,
+  FaShoppingBag,
+} from "react-icons/fa";
 import { FaCoins } from "react-icons/fa6";
 import { PiShoppingBagFill } from "react-icons/pi";
 
@@ -49,7 +57,6 @@ export default function Profile() {
 
   if (!userData) return <div className="p-4">Loading profile...</div>;
 
-  // Static eco impact values (for now)
   const impact = {
     points: 2450,
     co2Saved: 47.2,
@@ -57,9 +64,10 @@ export default function Profile() {
   };
 
   return (
-    <div className="p-4 pb-20 space-y-4 w-full">
+    <div className="p-4 pb-20 space-y-6 w-full">
       <h1 className="text-xl font-bold text-emerald-900 mb-2">Profile</h1>
 
+      {/* User Info */}
       <div className="bg-white p-4 rounded-xl shadow flex items-center gap-4">
         <FaUserCircle size={48} className="text-emerald-700" />
         <div>
@@ -68,6 +76,7 @@ export default function Profile() {
         </div>
       </div>
 
+      {/* Eco Impact */}
       <div className="space-y-2">
         <h2 className="text-base font-semibold text-emerald-900">Your Eco Impact</h2>
         <div className="bg-emerald-100 p-4 rounded-xl shadow-sm grid grid-cols-3 text-center gap-2 text-emerald-800">
@@ -89,6 +98,33 @@ export default function Profile() {
         </div>
       </div>
 
+      {/* Eco Goals */}
+      <div className="bg-white p-4 rounded-xl shadow space-y-4">
+        <h2 className="text-base font-semibold text-emerald-900 mb-1">🌱 Your Eco Goals</h2>
+
+        {/* Goal 1 */}
+        <Goal
+          icon={<FaRecycle className="text-emerald-500" />}
+          label="Bought 5 Second-Hand Items"
+          progress={50}
+        />
+
+        {/* Goal 2 */}
+        <Goal
+          icon={<FaLeaf className="text-green-600" />}
+          label="Saved 20kg CO₂ Emissions"
+          progress={80}
+        />
+
+        {/* Goal 3 */}
+        <Goal
+          icon={<FaShoppingBag className="text-emerald-700" />}
+          label="Switched to 3 Eco Brands"
+          progress={30}
+        />
+      </div>
+
+      {/* Settings */}
       <div className="space-y-3">
         <SettingItem icon={<FaEdit />} label="Edit Profile" />
         <SettingItem icon={<FaQuestionCircle />} label="Help & Support" />
@@ -111,5 +147,22 @@ function SettingItem({ icon, label, danger = false, onClick }) {
         <span className="font-medium">{label}</span>
       </div>
     </button>
+  );
+}
+
+function Goal({ icon, label, progress }) {
+  return (
+    <div>
+      <div className="flex items-center gap-3 mb-1">
+        {icon}
+        <span className="font-medium text-sm text-emerald-800">{label}</span>
+      </div>
+      <div className="w-full bg-emerald-100 h-3 rounded-full">
+        <div
+          className="bg-emerald-500 h-3 rounded-full transition-all"
+          style={{ width: `${progress}%` }}
+        />
+      </div>
+    </div>
   );
 }

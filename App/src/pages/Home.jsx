@@ -105,7 +105,7 @@ export default function Home() {
       </div>
 
       {/* 📈 Weekly Stats Button */}
-      <div className="px-4 mt-6">
+      <div className="px-4 mt-4">
         <Link to="weekly-stats">
           <button className="w-full bg-emerald-600 text-white font-semibold text-lg px-4 py-4 rounded-xl shadow-md hover:bg-emerald-700 transition">
             📈 View Weekly Stats
@@ -113,8 +113,20 @@ export default function Home() {
         </Link>
       </div>
 
+      <div className="p-5">
+        {/* Other content */}
+        
+        <div className="mt-2 text-center">
+          <Link to="/coming-soon">
+            <button className="bg-emerald-600 text-white px-6 py-3 rounded-xl hover:bg-emerald-700 transition shadow-md">
+              🌿 Upcoming Feature: Buy Refurbished
+            </button>
+          </Link>
+        </div>
+      </div>
+
       {/* 🏆 Enhanced Leaderboard */}
-      <div className="px-4 mt-6">
+      <div className="px-4 mt-2">
         <div className="bg-white border border-emerald-200 p-5 rounded-2xl shadow-lg">
           <h3 className="text-xl font-bold text-emerald-800 mb-4 flex items-center gap-2">
             🏆 Top Eco Warriors

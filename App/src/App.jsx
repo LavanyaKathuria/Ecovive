@@ -11,6 +11,7 @@ import Signup from "./pages/Signup";
 import RequireAuth from "./utilis/RequireAuth";
 import Community from "./pages/Community";
 import TeamDashboard from "./pages/TeamDashboard";
+import ComingSoon from "./pages/ComingSoon";
 import "./App.css";
 
 function App() {
@@ -39,6 +40,7 @@ function App() {
               <Route path="weekly-stats" element={<WeeklyStats />} />
               <Route path="/community" element={<Community />} />
               <Route path="/team" element={<TeamDashboard />} />
+              <Route path="/coming-soon" element={<ComingSoon />} />
             </Route>
           </Routes>
         </Router>
