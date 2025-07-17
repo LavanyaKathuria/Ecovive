@@ -3,6 +3,7 @@ import { useState } from "react";
 import { auth, db } from "../utilis/firebase";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
+import logo from "../assets/ecovive-logo.jpg";
 
 export default function Signup() {
   const navigate = useNavigate();
@@ -27,13 +28,16 @@ export default function Signup() {
   return (
     <div className="min-h-screen bg-gradient-to-tr from-emerald-200 via-white to-emerald-100 flex items-center justify-center p-4">
       <div className="w-full max-w-sm backdrop-blur-xl bg-white/80 border border-emerald-300 rounded-3xl shadow-2xl p-8 space-y-6">
+        {/* Logo + Title */}
         <div className="flex flex-col items-center">
-          <div className="bg-emerald-100 p-4 rounded-full shadow">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" className="w-8 h-8 text-emerald-700" viewBox="0 0 16 16">
-              <path d="M8 0C5 4 1 8 1 13a7 7 0 0 0 14 0C15 8 11 4 8 0z" />
-            </svg>
+          <div className="h-20 w-20 rounded-full overflow-hidden bg-emerald-100 shadow flex items-center justify-center mb-2">
+            <img
+              src={logo}
+              alt="EcoVive Logo"
+              className="h-full w-full object-cover"
+            />
           </div>
-          <h1 className="text-2xl font-bold text-emerald-900 mt-3">Join EcoVive</h1>
+          <h1 className="text-2xl font-bold text-emerald-900">Join EcoVive</h1>
           <p className="text-sm text-emerald-700">Start your sustainable journey</p>
         </div>
 

@@ -81,12 +81,7 @@ export default function Community() {
         ) : (
           <div className="space-y-4">
             {posts.map((post) => (
-              <PostCard
-                key={post.id}
-                name={post.name}
-                message={post.message}
-                timestamp={post.timestamp}
-              />
+              <PostCard key={post.id} post={post} />
             ))}
           </div>
         )}
